@@ -1,0 +1,11 @@
+{
+  "expo": {
+    "name": "rn-mtg-life",
+    "slug": "rn-mtg-life",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  },
+  "name": "rn-mtg-life"
+}
