@@ -7,6 +7,9 @@ export default function NewGameConfig({ playerCount }) {
     startingHealth: 20,
   });
 
+  const startingHealthOptions = [20, 30, 40];
+
+  // Function that handles updating matchSettings state through switch options
   const updateMatchSettings = ({ settingType, updatedValue }) => {
     switch (settingType) {
       case 'healthButton':
@@ -18,19 +21,21 @@ export default function NewGameConfig({ playerCount }) {
           ...matchSettings,
           startingHealth: updatedValue,
         });
-        console.log('health edit: ', matchSettings);
         break;
+
       case 'healthManual':
         setMatchSettings({
           ...matchSettings,
           startingHealth: updatedValue.replace(/[^0-9]/g, ''),
         });
         break;
+
       default:
         console.log(matchSettings);
     }
   };
 
+  // Checks matchSettings.startingHealth value. If less undefined/null || less than 1 defaults startingHealth to 20
   const checkHealthValue = () => {
     if (!matchSettings.startingHealth || matchSettings.startingHealth < 1) {
       setMatchSettings({
@@ -54,36 +59,19 @@ export default function NewGameConfig({ playerCount }) {
             from the options below:
           </Paragraph>
           <div style={{ display: 'flex', justifyContent: 'space-around' }}>
-            <Button
-              onPress={() =>
-                updateMatchSettings({
-                  settingType: 'healthButton',
-                  updatedValue: 20,
-                })
-              }
-            >
-              20
-            </Button>
-            <Button
-              onPress={() =>
-                updateMatchSettings({
-                  settingType: 'healthButton',
-                  updatedValue: 30,
-                })
-              }
-            >
-              30
-            </Button>
-            <Button
-              onPress={() =>
-                updateMatchSettings({
-                  settingType: 'healthButton',
-                  updatedValue: 40,
-                })
-              }
-            >
-              40
-            </Button>
+            {startingHealthOptions.map((value, index) => (
+              <Button
+                key={`healthOption-${index}`}
+                onPress={() =>
+                  updateMatchSettings({
+                    settingType: 'healthButton',
+                    updatedValue: value,
+                  })
+                }
+              >
+                {value}
+              </Button>
+            ))}
           </div>
         </Card.Content>
         <Card.Actions>
