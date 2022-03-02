@@ -1,17 +1,42 @@
 import { useState } from 'react';
 import { Title, Card, Paragraph, Button, TextInput } from 'react-native-paper';
+import Dropdown from 'react-native-paper-dropdown';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function NewGameConfig({ playerCount }) {
   const [matchSettings, setMatchSettings] = useState({
+    selectedFormat: 'standard',
     startingHealth: 20,
   });
+
+  const [showDropDown, setShowDropDown] = useState(false);
+
+  // Format options
+  const mtgFormatOptions = [
+    {
+      label: 'Standard',
+      value: 'standard',
+    },
+    {
+      label: 'Commander',
+      value: 'commander',
+    },
+    {
+      label: 'Modern',
+      value: 'modern',
+    },
+    {
+      label: 'Historic',
+      value: 'historic',
+    },
+  ];
 
   // Starting options for health pool, mapped over to render buttons for each option
   const startingHealthOptions = [20, 30, 40];
 
   // Function that handles updating matchSettings state through switch options
   const updateMatchSettings = ({ settingType, updatedValue }) => {
+    console.log(settingType, updatedValue);
     switch (settingType) {
       case 'healthButton':
         updatedValue <= 1 ? (updatedValue = 1) : updatedValue;
@@ -27,10 +52,16 @@ export default function NewGameConfig({ playerCount }) {
       case 'healthManual':
         setMatchSettings({
           ...matchSettings,
-          startingHealth: updatedValue.replace(/[^0-9]/g, ''),
+          startingHealth: updatedValue.replace(/[^0-9]/g, ''), //RegEx prevents any non-numeric character from being entered.
         });
         break;
-
+      case 'updateFormat':
+        setMatchSettings({
+          ...matchSettings,
+          selectedFormat: updatedValue,
+        });
+        console.log(matchSettings);
+        break;
       default:
         console.log(matchSettings);
     }
@@ -49,6 +80,33 @@ export default function NewGameConfig({ playerCount }) {
   return (
     <div>
       <Title>Match Settings</Title>
+      <Card>
+        <Card.Title title='Match Format' />
+        <Card.Content>
+          <Paragraph>
+            Select the match format (Standard, Modern, Commander, etc.) from the
+            dropdown below:
+          </Paragraph>
+        </Card.Content>
+        <Card.Actions>
+          <Dropdown
+            label={'MTG Format'}
+            mode={'outlined'}
+            visible={showDropDown}
+            dense={true}
+            showDropDown={() => setShowDropDown(true)}
+            onDismiss={() => setShowDropDown(false)}
+            list={mtgFormatOptions}
+            value={matchSettings.selectedFormat}
+            setValue={(format) =>
+              updateMatchSettings({
+                settingType: 'updateFormat',
+                updatedValue: format,
+              })
+            }
+          ></Dropdown>
+        </Card.Actions>
+      </Card>
       <Card>
         <Card.Title title='Starting Health' />
         <Card.Content>
@@ -77,6 +135,7 @@ export default function NewGameConfig({ playerCount }) {
         </Card.Content>
         <Card.Actions>
           <Button
+            disabled={matchSettings.startingHealth === 1}
             onPress={() =>
               updateMatchSettings({
                 settingType: 'healthButton',
