@@ -7,6 +7,7 @@ export default function NewGameConfig({ playerCount }) {
     startingHealth: 20,
   });
 
+  // Starting options for health pool, mapped over to render buttons for each option
   const startingHealthOptions = [20, 30, 40];
 
   // Function that handles updating matchSettings state through switch options
