@@ -21,7 +21,7 @@ export default function OnePlayerHealth({ navigation }) {
   getGameData();
 
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+    <View style={{ flex: 1, padding: '.5rem' }}>
       {gameData.length > 1 ? (
         <OnePlayerView gameType={gameData.gameType} />
       ) : (

@@ -1,5 +1,12 @@
 import { useState } from 'react';
-import { Title, Card, Paragraph, Button, TextInput } from 'react-native-paper';
+import {
+  Surface,
+  Title,
+  Card,
+  Paragraph,
+  Button,
+  TextInput,
+} from 'react-native-paper';
 import Dropdown from 'react-native-paper-dropdown';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -80,7 +87,7 @@ export default function NewGameConfig({ playerCount }) {
   return (
     <div>
       <Title>Match Settings</Title>
-      <Card>
+      <Card style={{ marginBottom: '8px' }} mode={'elevated'} elevation={3}>
         <Card.Title title='Match Format' />
         <Card.Content>
           <Paragraph>
@@ -104,10 +111,11 @@ export default function NewGameConfig({ playerCount }) {
                 updatedValue: format,
               })
             }
+            dropDownStyle={{ height: '40px', width: '100%' }}
           ></Dropdown>
         </Card.Actions>
       </Card>
-      <Card>
+      <Card style={{ marginBottom: '8px' }} mode={'elevated'} elevation={3}>
         <Card.Title title='Starting Health' />
         <Card.Content>
           <Paragraph>
@@ -133,20 +141,28 @@ export default function NewGameConfig({ playerCount }) {
             ))}
           </div>
         </Card.Content>
-        <Card.Actions>
+        <Card.Actions style={{ justifyContent: 'center' }}>
           <Button
             disabled={matchSettings.startingHealth === 1}
+            mode={'contained'}
             onPress={() =>
               updateMatchSettings({
                 settingType: 'healthButton',
                 updatedValue: matchSettings.startingHealth - 5,
               })
             }
+            style={{
+              height: '42px',
+              marginTop: 'auto',
+              width: '15%',
+              borderTopRightRadius: 0,
+              borderBottomRightRadius: 0,
+            }}
+            labelStyle={{ justifyContent: 'center' }}
           >
             -5
           </Button>
           <TextInput
-            label='Health'
             mode='outlined'
             dense
             value={matchSettings.startingHealth}
@@ -156,16 +172,24 @@ export default function NewGameConfig({ playerCount }) {
                 updatedValue: text,
               })
             }
-            style={{ width: '80%' }}
+            style={{ width: '70%', borderRadius: 0, padding: 0 }}
             onBlur={() => checkHealthValue()}
           ></TextInput>
           <Button
+            mode={'contained'}
             onPress={() =>
               updateMatchSettings({
                 settingType: 'healthButton',
                 updatedValue: matchSettings.startingHealth + 5,
               })
             }
+            style={{
+              height: '42px',
+              marginTop: 'auto',
+              width: '15%',
+              borderTopLeftRadius: 0,
+              borderBottomLeftRadius: 0,
+            }}
           >
             +5
           </Button>
